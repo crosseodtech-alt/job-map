@@ -55,48 +55,130 @@
         <div>
           <h3>Skills</h3>
 
-          <div class="skills-categories">
+          <style>
+            .skill-cards {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 0.9rem;
+              margin-top: 0.75rem;
+            }
+            .skill-card {
+              background-color: var(--white);
+              border: 1px solid var(--border);
+              border-top: 3px solid var(--accent-tan);
+              border-radius: 6px;
+              padding: 1rem 1.1rem;
+              transition: box-shadow 0.2s, transform 0.2s;
+            }
+            .skill-card:hover {
+              box-shadow: 0 4px 14px rgba(139,105,20,0.15);
+              transform: translateY(-2px);
+            }
+            .skill-card.wide {
+              grid-column: span 2;
+            }
+            .skill-card h4 {
+              font-size: 0.8rem;
+              font-weight: 700;
+              text-transform: uppercase;
+              letter-spacing: 0.07em;
+              color: var(--accent-tan);
+              margin-bottom: 0.55rem;
+            }
+            .skill-tags {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 0.35rem;
+            }
+            .skill-tag {
+              background-color: var(--light-surface);
+              color: var(--dark-gray);
+              font-size: 0.78rem;
+              font-weight: 500;
+              padding: 0.25rem 0.6rem;
+              border-radius: 20px;
+              white-space: nowrap;
+            }
 
-            <div class="skill-category">
+            @media (max-width: 768px) {
+              .skill-cards { grid-template-columns: 1fr; }
+              .skill-card.wide { grid-column: span 1; }
+            }
+          </style>
+
+          <div class="skill-cards">
+
+            <div class="skill-card">
               <h4>Spatial Analysis &amp; Remote Sensing</h4>
-              <p>ArcGIS Pro, QGIS, raster analysis, DEM/terrain modeling, watershed delineation,
-                drone photogrammetry (UAV point cloud processing), NDVI and land cover analysis,
-                NLCD datasets</p>
+              <div class="skill-tags">
+                <span class="skill-tag">ArcGIS Pro</span>
+                <span class="skill-tag">QGIS</span>
+                <span class="skill-tag">Raster analysis</span>
+                <span class="skill-tag">DEM/terrain modeling</span>
+                <span class="skill-tag">Watershed delineation</span>
+                <span class="skill-tag">UAV photogrammetry</span>
+                <span class="skill-tag">NDVI</span>
+                <span class="skill-tag">NLCD</span>
+              </div>
             </div>
 
-            <div class="skill-category">
+            <div class="skill-card">
               <h4>Field Methods &amp; Data Collection</h4>
-              <p>Stream discharge measurement (Hach FH950, mid-section method), GPS/GNSS data
-                collection, field reconnaissance, topographic survey</p>
+              <div class="skill-tags">
+                <span class="skill-tag">Stream discharge measurement</span>
+                <span class="skill-tag">Hach FH950</span>
+                <span class="skill-tag">GPS/GNSS</span>
+                <span class="skill-tag">Topographic survey</span>
+                <span class="skill-tag">Field reconnaissance</span>
+              </div>
             </div>
 
-            <div class="skill-category">
-              <h4>Web Mapping &amp; Data Visualization</h4>
-              <p>Leaflet.js, p5.js, ApexCharts, ArcGIS StoryMaps, interactive dashboard development,
-                temporal and spatial data visualization</p>
+            <div class="skill-card">
+              <h4>Web Mapping &amp; Visualization</h4>
+              <div class="skill-tags">
+                <span class="skill-tag">Leaflet.js</span>
+                <span class="skill-tag">ArcGIS StoryMaps</span>
+                <span class="skill-tag">p5.js</span>
+                <span class="skill-tag">ApexCharts</span>
+                <span class="skill-tag">Dashboard development</span>
+                <span class="skill-tag">Temporal analysis</span>
+              </div>
             </div>
 
-            <div class="skill-category">
+            <div class="skill-card">
               <h4>Programming &amp; Data Management</h4>
-              <p>JavaScript, Node.js/Express, MongoDB, REST API integration, Python (basic), SQL</p>
+              <div class="skill-tags">
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">Node.js / Express</span>
+                <span class="skill-tag">MongoDB</span>
+                <span class="skill-tag">REST APIs</span>
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">SQL</span>
+              </div>
             </div>
 
-            <div class="skill-category">
+            <div class="skill-card wide">
               <h4>Professional &amp; Leadership</h4>
-              <p>Federal contract management (25+ concurrent contracts), technical writing, QA/QC,
-                team leadership, WMD/CBRNE instruction (U.S. Dept. of State)</p>
+              <div class="skill-tags">
+                <span class="skill-tag">Federal contract management</span>
+                <span class="skill-tag">WMD/CBRNE instruction</span>
+                <span class="skill-tag">Technical writing</span>
+                <span class="skill-tag">QA/QC</span>
+                <span class="skill-tag">Team leadership</span>
+                <span class="skill-tag">25+ concurrent contracts</span>
+              </div>
             </div>
 
           </div>
           
           <h3 style="margin-top: 2rem;">Education</h3>
-          <div style="background-color: #eae6dd; padding: 1.5rem; border-radius: 5px; margin-top: 1rem; border-left: 4px solid #2d5a27;">
+          <div style="background-color: var(--light-surface); padding: 1.5rem; border-radius: 5px; margin-top: 1rem; border-left: 4px solid var(--primary-green);">
             <p style="margin-bottom: 0.5rem;"><strong>San Diego State University</strong></p>
-            <p style="color: #4a4a38; margin-bottom: 0.5rem;">B.A. in Geography (Expected 2026)</p>
-            <p style="color: #4a4a38; font-size: 0.95rem;">Focus: GIS, Environmental Systems, Remote Sensing</p>
+            <p style="color: var(--medium-gray); margin-bottom: 0.5rem;">B.A. in Geography (Expected 2026)</p>
+            <p style="color: var(--medium-gray); font-size: 0.95rem;">Focus: GIS, Environmental Systems, Remote Sensing</p>
             
             <p style="margin-top: 1.5rem; margin-bottom: 0.5rem;"><strong>Norco College</strong></p>
-            <p style="color: #4a4a38; margin-bottom: 0.5rem;">A.S. in Industrial Automation (2024)</p>
+            <p style="color: var(--medium-gray); margin-bottom: 0.5rem;">A.S. in Industrial Automation (2024)</p>
           </div>
         </div>
       </div>
@@ -104,7 +186,7 @@
     
     <section>
       <h2>What Drives Me</h2>
-      <p style="text-align: center; font-size: 1.1rem; color: #4a4a38; max-width: 900px; margin: 0 auto; line-height: 1.8;">
+      <p style="text-align: center; font-size: 1.1rem; color: var(--medium-gray); max-width: 900px; margin: 0 auto; line-height: 1.8;">
         Geographic data, when properly analyzed and visualized, changes how we understand the land
         beneath our feet. I'm drawn to problems where spatial thinking isn't just useful -- it's
         necessary. Watershed health, forest cover change, riparian corridor integrity: these are
