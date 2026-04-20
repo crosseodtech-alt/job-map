@@ -1,4 +1,416 @@
-/* Portfolio Website Styles - Professional Blue/Gray Theme */
+/* Portfolio Website Styles - Forest Green / Earth Brown Theme */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-green: #2d5a27;
+  --secondary-green: #4a7c42;
+  --dark-gray: #2a2a1e;
+  --medium-gray: #4a4a38;
+  --light-surface: #eae6dd;
+  --accent-brown: #8b6914;
+  --accent-tan: #c49a3c;
+  --white: #ffffff;
+  --bg: #f5f2ec;
+  --text-dark: #1e1e16;
+  --border: #c8c2b0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text-dark);
+  background-color: var(--bg);
+}
+
+/* Navigation */
+nav {
+  background-color: var(--primary-green);
+  padding: 1rem 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav h1 {
+  color: var(--white);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+nav a {
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+  font-size: 1rem;
+}
+
+nav a:hover {
+  color: var(--accent-tan);
+}
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+  color: var(--white);
+  text-align: center;
+  padding: 8rem 2rem;
+}
+
+.hero h2 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.hero p {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+  opacity: 0.95;
+}
+
+.btn {
+  display: inline-block;
+  background-color: var(--accent-brown);
+  color: var(--white);
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: var(--accent-tan);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+/* Section Styles */
+section {
+  margin-bottom: 4rem;
+}
+
+h2 {
+  color: var(--primary-green);
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+h3 {
+  color: var(--dark-gray);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+/* About Section */
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.about-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--medium-gray);
+}
+
+/* Skills Categories */
+.skills-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.skill-category {
+  background-color: var(--light-surface);
+  border-left: 4px solid var(--primary-green);
+  border-radius: 0 6px 6px 0;
+  padding: 1rem 1.25rem;
+}
+
+.skill-category h4 {
+  color: var(--primary-green);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.6rem;
+}
+
+.skill-category p {
+  color: var(--medium-gray);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Legacy flat skills list -- kept for any pages still using it */
+.skills-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.skills-list li {
+  background-color: var(--light-surface);
+  padding: 0.8rem 1rem;
+  border-radius: 5px;
+  color: var(--dark-gray);
+  font-weight: 500;
+}
+
+.skills-list li:before {
+  content: "✓ ";
+  color: var(--primary-green);
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+/* Projects Grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.project-card {
+  background-color: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.13);
+}
+
+.project-header {
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+  color: var(--white);
+  padding: 1.5rem;
+}
+
+.project-header h3 {
+  color: var(--white);
+  margin-bottom: 0.5rem;
+}
+
+.project-body {
+  padding: 1.5rem;
+}
+
+.project-body p {
+  color: var(--medium-gray);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.project-link {
+  display: inline-block;
+  color: var(--accent-brown);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+.project-link:hover {
+  color: var(--primary-green);
+}
+
+.project-status {
+  display: inline-block;
+  background-color: var(--light-surface);
+  color: var(--dark-gray);
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Resume Section */
+.resume-section {
+  background-color: var(--light-surface);
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 3rem;
+}
+
+.resume-section h3 {
+  color: var(--primary-green);
+  border-bottom: 2px solid var(--accent-brown);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.job {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.job:last-child {
+  border-bottom: none;
+}
+
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+
+.job-title {
+  font-size: 1.2rem;
+  color: var(--dark-gray);
+  font-weight: 600;
+}
+
+.job-company {
+  color: var(--accent-brown);
+  font-weight: 500;
+}
+
+.job-date {
+  color: var(--medium-gray);
+  font-style: italic;
+}
+
+.job-description {
+  color: var(--medium-gray);
+  line-height: 1.6;
+  margin-top: 0.5rem;
+}
+
+.job-description ul {
+  margin-left: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.job-description li {
+  margin-bottom: 0.5rem;
+}
+
+/* Contact Section */
+.contact-info {
+  text-align: center;
+  background-color: var(--light-surface);
+  padding: 3rem;
+  border-radius: 10px;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--primary-green);
+  color: var(--white);
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.contact-btn:hover {
+  background-color: var(--secondary-green);
+  transform: translateY(-2px);
+}
+
+/* Footer */
+footer {
+  background-color: var(--dark-gray);
+  color: var(--white);
+  text-align: center;
+  padding: 2rem;
+  margin-top: 4rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .hero h2 {
+    font-size: 2rem;
+  }
+  
+  .hero p {
+    font-size: 1.1rem;
+  }
+  
+  .about-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .skills-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .job-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .contact-links {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}/* Portfolio Website Styles - Professional Blue/Gray Theme */
 
 * {
   margin: 0;
