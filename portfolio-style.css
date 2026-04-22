@@ -82,6 +82,7 @@ nav a:hover {
   font-size: 3rem;
   margin-bottom: 1rem;
   font-weight: 700;
+  color: var(--white);
 }
 
 .hero p {
