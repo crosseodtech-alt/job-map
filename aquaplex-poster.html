@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aquaplex Canyon Terrain Analysis – GEOG 401 Poster</title>
+  <link rel="stylesheet" href="portfolio-style.css">
+  <style>
+    /* ── Hero banner ── */
+    .poster-hero {
+      background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+      color: var(--white);
+      padding: 3rem 2rem 2.5rem;
+      text-align: center;
+    }
+
+    .poster-hero .tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: var(--white);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem;
+      border-radius: 20px;
+      margin-bottom: 1.2rem;
+    }
+
+    .poster-hero h2 {
+      color: var(--white);
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      margin-bottom: 0.8rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .poster-hero p {
+      color: rgba(255,255,255,0.88);
+      font-size: 1rem;
+      max-width: 620px;
+      margin: 0 auto 1.8rem;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-outline-white {
+      display: inline-block;
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255,255,255,0.5);
+      padding: 0.75rem 1.6rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: border-color 0.2s, background 0.2s;
+      font-size: 0.95rem;
+    }
+
+    .btn-outline-white:hover {
+      border-color: var(--white);
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* ── Viewer wrap ── */
+    .viewer-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+    }
+
+    /* ── Toolbar ── */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--dark-gray);
+      border-radius: 8px 8px 0 0;
+      padding: 0.65rem 1rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .toolbar button {
+      background: var(--medium-gray);
+      border: none;
+      color: var(--white);
+      padding: 0.38rem 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: background 0.15s;
+    }
+
+    .toolbar button:hover { background: var(--primary-green); }
+
+    #zoom-level {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.82rem;
+      min-width: 3.5rem;
+      text-align: center;
+    }
+
+    .toolbar-right {
+      color: rgba(255,255,255,0.45);
+      font-size: 0.8rem;
+      font-style: italic;
+    }
+
+    /* ── Canvas area ── */
+    #canvas-container {
+      background: var(--medium-gray);
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      overflow: auto;
+      min-height: 580px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem;
+      cursor: grab;
+      position: relative;
+    }
+
+    #canvas-container:active { cursor: grabbing; }
+
+    #pdf-canvas {
+      display: block;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.45);
+      border-radius: 2px;
+      max-width: 100%;
+    }
+
+    #loading-msg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: rgba(255,255,255,0.5);
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .spinner {
+      width: 30px;
+      height: 30px;
+      border: 3px solid rgba(255,255,255,0.15);
+      border-top-color: var(--accent-tan);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hint {
+      text-align: center;
+      color: var(--medium-gray);
+      font-size: 0.78rem;
+      margin-top: 0.75rem;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── Info strip ── */
+    .info-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .info-cell {
+      background: var(--light-surface);
+      border-left: 4px solid var(--primary-green);
+      border-radius: 0 6px 6px 0;
+      padding: 0.9rem 1.1rem;
+    }
+
+    .info-cell .label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent-brown);
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .info-cell .value {
+      font-size: 0.92rem;
+      color: var(--dark-gray);
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .toolbar { flex-direction: column; align-items: flex-start; }
+      .toolbar-right { display: none; }
+      .info-strip { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-container">
+      <h1>Joshua Cross</h1>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="resume.html">Resume</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="poster-hero">
+    <div class="tag">GEOG 401 &nbsp;·&nbsp; Final Deliverable</div>
+    <h2>Aquaplex Canyon Terrain Analysis</h2>
+    <p>Academic poster presented May 2026 — LiDAR, UAV-derived SfM photogrammetry, and 3D valley volume modeling of an active erosional scarp at SDSU.</p>
+    <div class="hero-actions">
+      <a href="aquaplex-poster.pdf" download class="btn">↓ Download PDF</a>
+      <a href="https://storymaps.arcgis.com/stories/194bd8a8081242cbbac8ca4844e58283" target="_blank" class="btn-outline-white">View Full StoryMap →</a>
+    </div>
+  </div>
+
+  <div class="viewer-wrap">
+
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <button id="btn-zoom-out">−</button>
+        <span id="zoom-level">100%</span>
+        <button id="btn-zoom-in">+</button>
+        <button id="btn-fit">Fit</button>
+        <button id="btn-full">1:1</button>
+      </div>
+      <div class="toolbar-right">
+        San Diego State University &nbsp;·&nbsp; Geography Department &nbsp;·&nbsp; May 2026
+      </div>
+    </div>
+
+    <div id="canvas-container">
+      <div id="loading-msg">
+        <div class="spinner"></div>
+        Loading poster…
+      </div>
+      <canvas id="pdf-canvas" style="display:none;"></canvas>
+    </div>
+
+    <p class="hint">Use + / − to zoom &nbsp;·&nbsp; Click and drag to pan &nbsp;·&nbsp; Scroll to navigate</p>
+
+    <div class="info-strip">
+      <div class="info-cell">
+        <div class="label">Course</div>
+        <div class="value">GEOG 401 — Geomorphology</div>
+      </div>
+      <div class="info-cell">
+        <div class="label">Methods</div>
+        <div class="value">LiDAR · UAV SfM · R (3D Modeling)</div>
+      </div>
+      <div class="info-cell">
+        <div class="label">Study Area</div>
+        <div class="value">Aquaplex Canyon, SDSU Campus</div>
+      </div>
+      <div class="info-cell">
+        <div class="label">Presented</div>
+        <div class="value">May 14, 2026</div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Joshua Cross. All rights reserved.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    const PDF_URL = 'aquaplex-poster.pdf'; // must match filename in your repo
+
+    let pdfDoc = null;
+    let scale = 1.0;
+    const canvas = document.getElementById('pdf-canvas');
+    const ctx = canvas.getContext('2d');
+    const container = document.getElementById('canvas-container');
+    const loadingMsg = document.getElementById('loading-msg');
+    const zoomLabel = document.getElementById('zoom-level');
+
+    function renderPage(sc) {
+      pdfDoc.getPage(1).then(page => {
+        const viewport = page.getViewport({ scale: sc });
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        page.render({ canvasContext: ctx, viewport }).promise.then(() => {
+          loadingMsg.style.display = 'none';
+          canvas.style.display = 'block';
+          zoomLabel.textContent = Math.round(sc * 100) + '%';
+        });
+      });
+    }
+
+    function fitScale() {
+      const containerW = container.clientWidth - 64;
+      pdfDoc.getPage(1).then(page => {
+        const vp = page.getViewport({ scale: 1 });
+        scale = Math.min(containerW / vp.width, 1.5);
+        renderPage(scale);
+      });
+    }
+
+    pdfjsLib.getDocument(PDF_URL).promise.then(doc => {
+      pdfDoc = doc;
+      fitScale();
+    }).catch(() => {
+      loadingMsg.innerHTML = '<span style="color:var(--accent-tan);">Could not load PDF.<br>Make sure <code>aquaplex-poster.pdf</code> is in the same folder as this file.</span>';
+    });
+
+    document.getElementById('btn-zoom-in').addEventListener('click', () => {
+      scale = Math.min(scale + 0.2, 4);
+      renderPage(scale);
+    });
+    document.getElementById('btn-zoom-out').addEventListener('click', () => {
+      scale = Math.max(scale - 0.2, 0.3);
+      renderPage(scale);
+    });
+    document.getElementById('btn-fit').addEventListener('click', fitScale);
+    document.getElementById('btn-full').addEventListener('click', () => {
+      scale = 1.0;
+      renderPage(scale);
+    });
+
+    // Click-and-drag pan
+    let isDragging = false, startX, startY, scrollLeft, scrollTop;
+    container.addEventListener('mousedown', e => {
+      isDragging = true;
+      startX = e.pageX - container.offsetLeft;
+      startY = e.pageY - container.offsetTop;
+      scrollLeft = container.scrollLeft;
+      scrollTop = container.scrollTop;
+    });
+    container.addEventListener('mouseleave', () => isDragging = false);
+    container.addEventListener('mouseup', () => isDragging = false);
+    container.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      e.preventDefault();
+      container.scrollLeft = scrollLeft - (e.pageX - container.offsetLeft - startX);
+      container.scrollTop = scrollTop - (e.pageY - container.offsetTop - startY);
+    });
+
+    window.addEventListener('resize', () => { if (pdfDoc) fitScale(); });
+  </script>
+
+</body>
+</html>
