@@ -67,7 +67,6 @@
       background: rgba(255,255,255,0.1);
     }
 
-    /* ── Viewer ── */
     .viewer-wrap {
       max-width: 1200px;
       margin: 0 auto;
@@ -79,7 +78,6 @@
       overflow: hidden;
       box-shadow: 0 8px 40px rgba(0,0,0,0.18);
       background: var(--dark-gray);
-      /* Fixed height — browser native controls handle zoom/pan inside */
       height: 80vh;
       min-height: 500px;
     }
@@ -99,7 +97,6 @@
       letter-spacing: 0.03em;
     }
 
-    /* ── Info strip ── */
     .info-strip {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -164,13 +161,13 @@
 
     <div class="pdf-frame-wrap">
       <iframe
-        src="aquaplex-poster.pdf"
+        src="https://docs.google.com/viewer?url=https://jcrossgis.com/aquaplex-poster.pdf&embedded=true"
         title="Aquaplex Canyon Terrain Analysis – GEOG 401 Final Poster"
         aria-label="PDF viewer: Aquaplex Canyon Terrain Analysis poster">
       </iframe>
     </div>
 
-    <p class="hint">Use your browser's built-in controls to zoom and pan &nbsp;·&nbsp; Download for full resolution</p>
+    <p class="hint">Use the viewer controls to zoom and pan &nbsp;·&nbsp; Download for full resolution</p>
 
     <div class="info-strip">
       <div class="info-cell">
