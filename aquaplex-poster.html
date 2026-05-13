@@ -130,16 +130,21 @@
       align-items: flex-start;
       justify-content: center;
       padding: 2rem;
-      cursor: grab;
       position: relative;
+      /* no cursor here — canvas handles it */
     }
-
-    #canvas-container:active { cursor: grabbing; }
 
     #pdf-canvas {
       display: block;
       box-shadow: 0 8px 40px rgba(0,0,0,0.45);
       border-radius: 2px;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    #pdf-canvas.dragging {
+      cursor: grabbing;
     }
 
     #loading-msg {
@@ -304,25 +309,21 @@
     const btnFit      = document.getElementById('btn-fit');
     const btnFull     = document.getElementById('btn-full');
 
-    let pdfPage       = null;   // the loaded page object
-    let scale         = 1.0;
-    let renderTask    = null;   // track in-flight render so we can cancel it
-    let rendering     = false;
-    let pendingScale  = null;   // if a zoom fires mid-render, queue it here
+    let pdfPage      = null;
+    let scale        = 1.0;
+    let renderTask   = null;
+    let rendering    = false;
+    let pendingScale = null;
 
-    // ── Disable buttons until PDF loads ──
     [btnIn, btnOut, btnFit, btnFull].forEach(b => b.disabled = true);
 
-    // ── Core render function ──
-    // Cancels any in-flight render before starting a new one.
+    // ── Render ──
     function renderAtScale(sc) {
       if (rendering) {
-        // Queue the latest requested scale; previous queued value is discarded
         pendingScale = sc;
         if (renderTask) renderTask.cancel();
         return;
       }
-
       rendering = true;
       scale = sc;
       zoomLabel.textContent = Math.round(sc * 100) + '%';
@@ -332,64 +333,40 @@
       canvas.height = viewport.height;
 
       renderTask = pdfPage.render({ canvasContext: ctx, viewport });
-
       renderTask.promise
         .then(() => {
-          rendering  = false;
-          renderTask = null;
-          // If a zoom was requested while we were busy, honour it now
+          rendering = false; renderTask = null;
           if (pendingScale !== null) {
-            const next = pendingScale;
-            pendingScale = null;
+            const next = pendingScale; pendingScale = null;
             renderAtScale(next);
           }
         })
         .catch(err => {
-          // RenderingCancelledException is expected — not an error
-          if (err && err.name === 'RenderingCancelledException') {
-            rendering  = false;
-            renderTask = null;
-            if (pendingScale !== null) {
-              const next = pendingScale;
-              pendingScale = null;
-              renderAtScale(next);
-            }
-          } else {
-            console.error('Render error:', err);
-            rendering = false;
+          rendering = false; renderTask = null;
+          if (err && err.name !== 'RenderingCancelledException') console.error(err);
+          if (pendingScale !== null) {
+            const next = pendingScale; pendingScale = null;
+            renderAtScale(next);
           }
         });
     }
 
-    // ── Fit to container width ──
     function fitScale() {
       const available = container.clientWidth - 64;
       const nativeVp  = pdfPage.getViewport({ scale: 1 });
-      const fit       = Math.min(available / nativeVp.width, 1.5);
-      renderAtScale(fit);
+      renderAtScale(Math.min(available / nativeVp.width, 1.5));
     }
 
-    // ── Load PDF ──
-    // Using fetch + arraybuffer avoids the race condition where pdf.js's
-    // internal fetch resolves after the first paint cycle on fast connections.
+    // ── Load ──
     fetch(PDF_URL)
-      .then(res => {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return res.arrayBuffer();
-      })
-      .then(buffer => pdfjsLib.getDocument({ data: buffer }).promise)
-      .then(doc => doc.getPage(1))
+      .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.arrayBuffer(); })
+      .then(buf  => pdfjsLib.getDocument({ data: buf }).promise)
+      .then(doc  => doc.getPage(1))
       .then(page => {
         pdfPage = page;
-
-        // Hide spinner, show canvas
         loadingMsg.style.display = 'none';
         canvas.style.display = 'block';
-
-        // Enable controls
         [btnIn, btnOut, btnFit, btnFull].forEach(b => b.disabled = false);
-
-        // Render at fit scale
         fitScale();
       })
       .catch(err => {
@@ -399,32 +376,56 @@
         console.error(err);
       });
 
-    // ── Zoom controls ──
+    // ── Zoom buttons ──
     btnIn.addEventListener('click',  () => renderAtScale(Math.min(scale + 0.25, 4)));
     btnOut.addEventListener('click', () => renderAtScale(Math.max(scale - 0.25, 0.25)));
     btnFit.addEventListener('click', fitScale);
     btnFull.addEventListener('click', () => renderAtScale(1.0));
 
-    // ── Click-and-drag pan ──
-    let isDragging = false, startX, startY, scrollL, scrollT;
+    // ── Drag to pan — listeners on CANVAS, scrolling the CONTAINER ──
+    let isDragging = false;
+    let dragStartX, dragStartY, scrollStartL, scrollStartT;
 
-    container.addEventListener('mousedown', e => {
-      isDragging = true;
-      startX  = e.pageX - container.offsetLeft;
-      startY  = e.pageY - container.offsetTop;
-      scrollL = container.scrollLeft;
-      scrollT = container.scrollTop;
-    });
-    container.addEventListener('mouseleave', () => { isDragging = false; });
-    container.addEventListener('mouseup',    () => { isDragging = false; });
-    container.addEventListener('mousemove',  e => {
-      if (!isDragging) return;
+    canvas.addEventListener('mousedown', e => {
       e.preventDefault();
-      container.scrollLeft = scrollL - (e.pageX - container.offsetLeft - startX);
-      container.scrollTop  = scrollT - (e.pageY - container.offsetTop  - startY);
+      isDragging  = true;
+      dragStartX  = e.clientX;
+      dragStartY  = e.clientY;
+      scrollStartL = container.scrollLeft;
+      scrollStartT = container.scrollTop;
+      canvas.classList.add('dragging');
     });
 
-    // ── Re-fit on window resize ──
+    // Listen on window so drag still works if mouse leaves the canvas mid-drag
+    window.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      container.scrollLeft = scrollStartL - (e.clientX - dragStartX);
+      container.scrollTop  = scrollStartT - (e.clientY - dragStartY);
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+      canvas.classList.remove('dragging');
+    });
+
+    // ── Touch pan (mobile) ──
+    let touchStartX, touchStartY, touchScrollL, touchScrollT;
+
+    canvas.addEventListener('touchstart', e => {
+      const t = e.touches[0];
+      touchStartX  = t.clientX;
+      touchStartY  = t.clientY;
+      touchScrollL = container.scrollLeft;
+      touchScrollT = container.scrollTop;
+    }, { passive: true });
+
+    canvas.addEventListener('touchmove', e => {
+      e.preventDefault();
+      const t = e.touches[0];
+      container.scrollLeft = touchScrollL - (t.clientX - touchStartX);
+      container.scrollTop  = touchScrollT - (t.clientY - touchStartY);
+    }, { passive: false });
+
     window.addEventListener('resize', () => { if (pdfPage) fitScale(); });
   </script>
 
