@@ -6,7 +6,6 @@
   <title>Aquaplex Canyon Terrain Analysis – GEOG 401 Poster</title>
   <link rel="stylesheet" href="portfolio-style.css">
   <style>
-    /* ── Hero banner ── */
     .poster-hero {
       background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
       color: var(--white);
@@ -68,14 +67,12 @@
       background: rgba(255,255,255,0.1);
     }
 
-    /* ── Viewer wrap ── */
     .viewer-wrap {
       max-width: 1200px;
       margin: 0 auto;
       padding: 2.5rem 2rem 4rem;
     }
 
-    /* ── Toolbar ── */
     .toolbar {
       display: flex;
       align-items: center;
@@ -106,6 +103,8 @@
     }
 
     .toolbar button:hover { background: var(--primary-green); }
+    .toolbar button:disabled { opacity: 0.4; cursor: default; }
+    .toolbar button:disabled:hover { background: var(--medium-gray); }
 
     #zoom-level {
       color: rgba(255,255,255,0.6);
@@ -120,7 +119,6 @@
       font-style: italic;
     }
 
-    /* ── Canvas area ── */
     #canvas-container {
       background: var(--medium-gray);
       border: 1px solid var(--border);
@@ -142,7 +140,6 @@
       display: block;
       box-shadow: 0 8px 40px rgba(0,0,0,0.45);
       border-radius: 2px;
-      max-width: 100%;
     }
 
     #loading-msg {
@@ -178,7 +175,6 @@
       letter-spacing: 0.03em;
     }
 
-    /* ── Info strip ── */
     .info-strip {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -258,9 +254,9 @@
     <div id="canvas-container">
       <div id="loading-msg">
         <div class="spinner"></div>
-        Loading poster…
+        <span id="loading-text">Loading poster…</span>
       </div>
-      <canvas id="pdf-canvas" style="display:none;"></canvas>
+      <canvas id="pdf-canvas"></canvas>
     </div>
 
     <p class="hint">Use + / − to zoom &nbsp;·&nbsp; Click and drag to pan &nbsp;·&nbsp; Scroll to navigate</p>
@@ -295,78 +291,141 @@
     pdfjsLib.GlobalWorkerOptions.workerSrc =
       'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-    const PDF_URL = 'aquaplex-poster.pdf'; // must match filename in your repo
+    const PDF_URL = 'aquaplex-poster.pdf';
 
-    let pdfDoc = null;
-    let scale = 1.0;
-    const canvas = document.getElementById('pdf-canvas');
-    const ctx = canvas.getContext('2d');
-    const container = document.getElementById('canvas-container');
-    const loadingMsg = document.getElementById('loading-msg');
-    const zoomLabel = document.getElementById('zoom-level');
+    const canvas      = document.getElementById('pdf-canvas');
+    const ctx         = canvas.getContext('2d');
+    const container   = document.getElementById('canvas-container');
+    const loadingMsg  = document.getElementById('loading-msg');
+    const loadingText = document.getElementById('loading-text');
+    const zoomLabel   = document.getElementById('zoom-level');
+    const btnIn       = document.getElementById('btn-zoom-in');
+    const btnOut      = document.getElementById('btn-zoom-out');
+    const btnFit      = document.getElementById('btn-fit');
+    const btnFull     = document.getElementById('btn-full');
 
-    function renderPage(sc) {
-      pdfDoc.getPage(1).then(page => {
-        const viewport = page.getViewport({ scale: sc });
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-        page.render({ canvasContext: ctx, viewport }).promise.then(() => {
-          loadingMsg.style.display = 'none';
-          canvas.style.display = 'block';
-          zoomLabel.textContent = Math.round(sc * 100) + '%';
+    let pdfPage       = null;   // the loaded page object
+    let scale         = 1.0;
+    let renderTask    = null;   // track in-flight render so we can cancel it
+    let rendering     = false;
+    let pendingScale  = null;   // if a zoom fires mid-render, queue it here
+
+    // ── Disable buttons until PDF loads ──
+    [btnIn, btnOut, btnFit, btnFull].forEach(b => b.disabled = true);
+
+    // ── Core render function ──
+    // Cancels any in-flight render before starting a new one.
+    function renderAtScale(sc) {
+      if (rendering) {
+        // Queue the latest requested scale; previous queued value is discarded
+        pendingScale = sc;
+        if (renderTask) renderTask.cancel();
+        return;
+      }
+
+      rendering = true;
+      scale = sc;
+      zoomLabel.textContent = Math.round(sc * 100) + '%';
+
+      const viewport = pdfPage.getViewport({ scale: sc });
+      canvas.width  = viewport.width;
+      canvas.height = viewport.height;
+
+      renderTask = pdfPage.render({ canvasContext: ctx, viewport });
+
+      renderTask.promise
+        .then(() => {
+          rendering  = false;
+          renderTask = null;
+          // If a zoom was requested while we were busy, honour it now
+          if (pendingScale !== null) {
+            const next = pendingScale;
+            pendingScale = null;
+            renderAtScale(next);
+          }
+        })
+        .catch(err => {
+          // RenderingCancelledException is expected — not an error
+          if (err && err.name === 'RenderingCancelledException') {
+            rendering  = false;
+            renderTask = null;
+            if (pendingScale !== null) {
+              const next = pendingScale;
+              pendingScale = null;
+              renderAtScale(next);
+            }
+          } else {
+            console.error('Render error:', err);
+            rendering = false;
+          }
         });
-      });
     }
 
+    // ── Fit to container width ──
     function fitScale() {
-      const containerW = container.clientWidth - 64;
-      pdfDoc.getPage(1).then(page => {
-        const vp = page.getViewport({ scale: 1 });
-        scale = Math.min(containerW / vp.width, 1.5);
-        renderPage(scale);
-      });
+      const available = container.clientWidth - 64;
+      const nativeVp  = pdfPage.getViewport({ scale: 1 });
+      const fit       = Math.min(available / nativeVp.width, 1.5);
+      renderAtScale(fit);
     }
 
-    pdfjsLib.getDocument(PDF_URL).promise.then(doc => {
-      pdfDoc = doc;
-      fitScale();
-    }).catch(() => {
-      loadingMsg.innerHTML = '<span style="color:var(--accent-tan);">Could not load PDF.<br>Make sure <code>aquaplex-poster.pdf</code> is in the same folder as this file.</span>';
-    });
+    // ── Load PDF ──
+    // Using fetch + arraybuffer avoids the race condition where pdf.js's
+    // internal fetch resolves after the first paint cycle on fast connections.
+    fetch(PDF_URL)
+      .then(res => {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.arrayBuffer();
+      })
+      .then(buffer => pdfjsLib.getDocument({ data: buffer }).promise)
+      .then(doc => doc.getPage(1))
+      .then(page => {
+        pdfPage = page;
 
-    document.getElementById('btn-zoom-in').addEventListener('click', () => {
-      scale = Math.min(scale + 0.2, 4);
-      renderPage(scale);
-    });
-    document.getElementById('btn-zoom-out').addEventListener('click', () => {
-      scale = Math.max(scale - 0.2, 0.3);
-      renderPage(scale);
-    });
-    document.getElementById('btn-fit').addEventListener('click', fitScale);
-    document.getElementById('btn-full').addEventListener('click', () => {
-      scale = 1.0;
-      renderPage(scale);
-    });
+        // Hide spinner, show canvas
+        loadingMsg.style.display = 'none';
+        canvas.style.display = 'block';
 
-    // Click-and-drag pan
-    let isDragging = false, startX, startY, scrollLeft, scrollTop;
+        // Enable controls
+        [btnIn, btnOut, btnFit, btnFull].forEach(b => b.disabled = false);
+
+        // Render at fit scale
+        fitScale();
+      })
+      .catch(err => {
+        loadingText.textContent = 'Could not load PDF. Check that aquaplex-poster.pdf is in your repo root.';
+        loadingText.style.color = 'var(--accent-tan)';
+        document.querySelector('.spinner').style.display = 'none';
+        console.error(err);
+      });
+
+    // ── Zoom controls ──
+    btnIn.addEventListener('click',  () => renderAtScale(Math.min(scale + 0.25, 4)));
+    btnOut.addEventListener('click', () => renderAtScale(Math.max(scale - 0.25, 0.25)));
+    btnFit.addEventListener('click', fitScale);
+    btnFull.addEventListener('click', () => renderAtScale(1.0));
+
+    // ── Click-and-drag pan ──
+    let isDragging = false, startX, startY, scrollL, scrollT;
+
     container.addEventListener('mousedown', e => {
       isDragging = true;
-      startX = e.pageX - container.offsetLeft;
-      startY = e.pageY - container.offsetTop;
-      scrollLeft = container.scrollLeft;
-      scrollTop = container.scrollTop;
+      startX  = e.pageX - container.offsetLeft;
+      startY  = e.pageY - container.offsetTop;
+      scrollL = container.scrollLeft;
+      scrollT = container.scrollTop;
     });
-    container.addEventListener('mouseleave', () => isDragging = false);
-    container.addEventListener('mouseup', () => isDragging = false);
-    container.addEventListener('mousemove', e => {
+    container.addEventListener('mouseleave', () => { isDragging = false; });
+    container.addEventListener('mouseup',    () => { isDragging = false; });
+    container.addEventListener('mousemove',  e => {
       if (!isDragging) return;
       e.preventDefault();
-      container.scrollLeft = scrollLeft - (e.pageX - container.offsetLeft - startX);
-      container.scrollTop = scrollTop - (e.pageY - container.offsetTop - startY);
+      container.scrollLeft = scrollL - (e.pageX - container.offsetLeft - startX);
+      container.scrollTop  = scrollT - (e.pageY - container.offsetTop  - startY);
     });
 
-    window.addEventListener('resize', () => { if (pdfDoc) fitScale(); });
+    // ── Re-fit on window resize ──
+    window.addEventListener('resize', () => { if (pdfPage) fitScale(); });
   </script>
 
 </body>
