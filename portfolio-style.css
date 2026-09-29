@@ -391,6 +391,74 @@ footer {
   margin-top: 4rem;
 }
 
+/* ===== Home: numbers strip ===== */
+.stats-strip {
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+  border-top: 3px solid var(--accent-tan);
+  color: var(--white);
+  margin-bottom: 0;
+}
+.stats-strip ul {
+  list-style: none;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.25rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  text-align: center;
+}
+.stats-strip li { padding: 0 0.5rem; }
+.stats-strip li + li { border-left: 1px solid rgba(255,255,255,0.18); }
+.stat-number {
+  display: block;
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--white);
+}
+.stat-number sup { font-size: 0.55em; }
+.stat-label {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 0.02em;
+}
+
+/* ===== Home: featured work ===== */
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+.featured-card {
+  display: block;
+  background: var(--white);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.featured-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.13); }
+.featured-card:hover .project-thumb img { transform: scale(1.04); }
+.featured-body { padding: 1.25rem 1.5rem 1.5rem; }
+.featured-body h3 { color: var(--primary-green); font-size: 1.2rem; margin-bottom: 0.5rem; }
+.featured-body p { color: var(--medium-gray); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0.9rem; }
+.featured-body .project-link { font-size: 0.95rem; }
+.section-more { text-align: center; margin-top: 2.5rem; }
+
+@media (max-width: 900px) {
+  .stats-strip ul { grid-template-columns: repeat(2, 1fr); row-gap: 1.75rem; }
+  .stats-strip li:nth-child(3) { border-left: none; }
+  .featured-grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
+}
+@media (max-width: 480px) {
+  .stat-number { font-size: 1.8rem; }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .nav-container {
