@@ -492,6 +492,22 @@ footer.site-footer {
   .stat-number { font-size: 1.8rem; }
 }
 
+/* ===== Resume page ===== */
+.resume-contact { text-align: center; color: var(--medium-gray); margin-bottom: 1.25rem; }
+.resume-contact a { color: var(--accent-brown); }
+.resume-download { text-align: center; margin: 0 0 2.5rem; }
+.resume-summary { color: var(--medium-gray); line-height: 1.8; }
+.competency-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.competency { background: var(--white); border-left: 4px solid var(--primary-green); border-radius: 0 6px 6px 0; padding: 0.9rem 1.1rem; }
+.competency h4 { color: var(--primary-green); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem; }
+.competency p { color: var(--medium-gray); font-size: 0.95rem; line-height: 1.55; }
+.project-list li { margin-bottom: 0.75rem; }
+.project-list a { color: var(--primary-green); }
+.cert-list { color: var(--medium-gray); margin-left: 1.5rem; line-height: 1.8; }
+.cert-list a { color: var(--accent-brown); }
+.credly-badge { display: inline-block; margin-top: 1rem; }
+@media (max-width: 768px) { .competency-grid { grid-template-columns: 1fr; } }
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .nav-container {
