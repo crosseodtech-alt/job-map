@@ -1,0 +1,112 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0a0e27; color: #fff; }
+
+/* Main tab buttons - positioned at top */
+#main-tabs { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; gap: 10px; background: rgba(10,14,39,0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 8px 12px; border-radius: 12px; border: 1px solid rgba(79,195,247,0.2); }
+.main-tab-btn { background: rgba(255,255,255,0.05); border: 1.5px solid rgba(79,195,247,0.25); color: #fff; padding: 10px 24px; font-size: 15px; font-weight: bold; border-radius: 7px; cursor: pointer; transition: all 0.3s ease; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+.main-tab-btn:hover { background: rgba(79,195,247,0.15); border-color: rgba(79,195,247,0.5); }
+.main-tab-btn.active { background: rgba(79,195,247,0.25); border-color: #4fc3f7; box-shadow: 0 0 10px rgba(79,195,247,0.4); }
+.tab-flag { font-size: 14px; margin-right: 4px; }
+
+/* Main view containers */
+.view-container { display: none; width: 100vw; height: 100vh; }
+.view-container.active { display: block; }
+
+/* Dashboard styles */
+#dashboard-container,
+#afg-dashboard-container { width: 100vw; height: 100vh; padding: 80px 15px 15px; display: flex; flex-direction: column; gap: 15px; overflow: hidden; }
+.dashboard-header { flex-shrink: 0; text-align: center; padding: 5px; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+.dashboard-header h1 { font-size: 2em; margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+.dashboard-header p { font-size: 1em; opacity: 0.9; }
+.tab-navigation { flex-shrink: 0; display: flex; gap: 10px; justify-content: center; padding: 10px 0; }
+.tab-button { background: rgba(255,255,255,0.1); border: 2px solid rgba(79,195,247,0.3); color: #fff; padding: 12px 30px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
+.tab-button:hover { background: rgba(79,195,247,0.2); border-color: rgba(79,195,247,0.6); }
+.tab-button.active { background: rgba(79,195,247,0.3); border-color: #4fc3f7; box-shadow: 0 0 10px rgba(79,195,247,0.5); }
+.tab-content { flex: 1; min-height: 0; overflow: hidden; position: relative; }
+.tab-pane { display: none; width: 100%; height: 100%; background: rgba(255,255,255,0.05); border-radius: 10px; padding: 20px; padding-bottom: 100px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); flex-direction: column; }
+.tab-pane.active { display: flex; }
+.chart-title { flex-shrink: 0; font-size: 1.4em; margin-bottom: 5px; color: #4fc3f7; text-align: center; }
+.chart-wrapper { flex: 1; min-height: 0; min-width: 0; padding-bottom: 60px; }
+.radar-container { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding-bottom: 40px; overflow: hidden; }
+.radar-chart-half { background: rgba(30,35,62,0.3); border-radius: 8px; padding: 10px; border: 1px solid rgba(79,195,247,0.15); min-height: 0; min-width: 0; width: 100%; height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+@media (max-width: 1200px) { .radar-container { grid-template-columns: 1fr; grid-template-rows: auto auto; overflow-y: auto; } .radar-chart-half { height: 420px; min-height: 420px; } }
+@media (max-height: 700px) { .radar-container { grid-template-columns: 1fr 1fr; overflow-y: hidden; } .radar-chart-half { height: 100%; min-height: 0; } }
+.apexcharts-tooltip { background: rgba(10, 14, 39, 0.95) !important; border: 1px solid rgba(79, 195, 247, 0.3) !important; color: #fff !important; }
+.apexcharts-tooltip-title { background: rgba(79, 195, 247, 0.2) !important; border-bottom: 1px solid rgba(79, 195, 247, 0.3) !important; }
+
+/* ===== MAP STYLES (shared by Iraq and Afghanistan) ===== */
+#map,
+#afg-map { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+
+/* Iraq control panel (original ID kept for backward compat) */
+#control-panel { position: absolute; top: 80px; left: 10px; z-index: 1000; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); width: 390px; max-height: calc(90vh - 80px); overflow-y: auto; }
+#control-panel h2 { margin: 0 0 15px 0; font-size: 18px; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+
+/* Afghanistan control panel (same layout, afg- prefix) */
+#afg-control-panel { position: absolute; top: 80px; left: 10px; z-index: 1000; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); width: 390px; max-height: calc(90vh - 80px); overflow-y: auto; }
+#afg-control-panel h2 { margin: 0 0 15px 0; font-size: 18px; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+
+.control-group { margin-bottom: 15px; }
+.control-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 13px; color: #34495e; }
+#current-date, #afg-current-date { color: #3498db; font-weight: bold; }
+#date-slider, #afg-date-slider { width: 100%; margin-top: 5px; -webkit-appearance: none; height: 6px; border-radius: 5px; background: #ddd; outline: none; }
+#date-slider::-webkit-slider-thumb, #afg-date-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #3498db; cursor: pointer; }
+#date-slider::-moz-range-thumb, #afg-date-slider::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #3498db; cursor: pointer; border: none; }
+.date-nav { display: flex; gap: 10px; margin-top: 10px; }
+.date-nav button { flex: 1; padding: 8px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; transition: background-color 0.3s; }
+.date-nav button:hover:not(:disabled) { background-color: #2980b9; }
+.date-nav button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+select { width: 100%; padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 13px; background-color: white; cursor: pointer; }
+select:focus { outline: none; border-color: #3498db; }
+.view-toggle { display: flex; gap: 8px; margin-top: 8px; }
+.toggle-btn { flex: 1; padding: 10px; background-color: #ecf0f1; color: #34495e; border: 2px solid #bdc3c7; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; transition: all 0.3s ease; }
+.toggle-btn:hover { background-color: #d5dbdb; border-color: #95a5a6; }
+.toggle-btn.active { background-color: #3498db; color: white; border-color: #2980b9; }
+.toggle-btn.active:hover { background-color: #2980b9; }
+#stats, #afg-stats { margin-top: 15px; padding: 15px; background-color: #ecf0f1; border-radius: 5px; }
+.stat-item { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.stat-item:last-child { margin-bottom: 0; }
+.stat-label { font-size: 13px; color: #34495e; }
+.stat-value { font-size: 16px; font-weight: bold; color: #e74c3c; }
+
+/* Legend (shared class + Iraq original ID) */
+#legend, #afg-legend { position: absolute; bottom: 20px; right: 20px; z-index: 1000; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+#legend h3, #afg-legend h3 { margin: 0 0 10px 0; font-size: 14px; color: #2c3e50; }
+.legend-item { display: flex; align-items: center; margin-bottom: 8px; font-size: 13px; color: #2c3e50; }
+.legend-item:last-child { margin-bottom: 0; }
+
+
+.legend-color { width: 16px; height: 16px; border-radius: 50%; margin-right: 8px; border: 2px solid white; box-shadow: 0 0 3px rgba(0,0,0,0.3); }
+.custom-marker { background: transparent !important; border: none !important; }
+.leaflet-popup-content-wrapper { border-radius: 8px; box-shadow: 0 3px 14px rgba(0,0,0,0.4); }
+.leaflet-popup-content { margin: 15px; line-height: 1.4; }
+
+/* Scrollbar styles for both control panels */
+#control-panel::-webkit-scrollbar, #afg-control-panel::-webkit-scrollbar { width: 8px; }
+#control-panel::-webkit-scrollbar-track, #afg-control-panel::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+#control-panel::-webkit-scrollbar-thumb, #afg-control-panel::-webkit-scrollbar-thumb { background: #bdc3c7; border-radius: 4px; }
+#control-panel::-webkit-scrollbar-thumb:hover, #afg-control-panel::-webkit-scrollbar-thumb:hover { background: #95a5a6; }
+
+@media (max-width: 768px) {
+  #control-panel, #afg-control-panel { width: 90%; left: 5%; max-height: 50vh; }
+  #legend, #afg-legend { bottom: 10px; right: 10px; font-size: 12px; }
+  #main-tabs { flex-wrap: wrap; justify-content: center; top: 8px; }
+  .main-tab-btn { padding: 8px 16px; font-size: 13px; }
+}
+/* Link back to the portfolio site */
+.main-tab-btn { white-space: nowrap; }
+.home-link { text-decoration: none; display: inline-flex; align-items: center; padding: 10px 14px; font-weight: 600; opacity: 0.85; }
+.home-link:hover { opacity: 1; }
+@media (max-width: 1100px) {
+  #main-tabs { flex-wrap: wrap; justify-content: center; width: calc(100% - 120px); top: 8px; }
+  .main-tab-btn { padding: 8px 14px; font-size: 13px; }
+  .home-link { padding: 8px 10px; }
+  #control-panel, #afg-control-panel { top: 115px; max-height: calc(100vh - 135px); }
+  #dashboard-container, #afg-dashboard-container { padding-top: 115px; }
+}
+@media (max-width: 600px) {
+  #main-tabs { gap: 6px; padding: 6px 8px; }
+  .main-tab-btn { padding: 6px 10px; font-size: 12px; }
+  #control-panel, #afg-control-panel { top: 185px; max-height: calc(100vh - 205px); }
+  #dashboard-container, #afg-dashboard-container { padding-top: 185px; }
+}

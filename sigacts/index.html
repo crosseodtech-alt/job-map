@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGACT Analysis - Iraq &amp; Afghanistan | Joshua Cross</title>
+  <meta name="description" content="Interactive map and dashboard of 1.8M+ significant activities in Iraq (2003-2011) and Afghanistan (2008-2014), by Joshua Cross.">
+  <link rel="stylesheet" href="lib/leaflet.css">
+  <link rel="stylesheet" href="lib/MarkerCluster.css">
+  <link rel="stylesheet" href="lib/MarkerCluster.Default.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="lib/leaflet.js"></script>
+  <script src="lib/leaflet.markercluster.js"></script>
+  <script src="lib/leaflet-heat.js"></script>
+  <script src="lib/apexcharts.min.js"></script>
+</head>
+<body>
+
+  <!-- ===== MAIN TAB BAR ===== -->
+  <div id="main-tabs">
+    <a class="main-tab-btn home-link" href="../projects.html" title="Back to jcrossgis.com">&larr; Portfolio</a>
+    <button class="main-tab-btn active" onclick="switchMainView('iraq-map')">
+      <span class="tab-flag">🇮🇶</span> Iraq: Map
+    </button>
+    <button class="main-tab-btn" onclick="switchMainView('iraq-dash')">
+      <span class="tab-flag">🇮🇶</span> Iraq: Visualizations
+    </button>
+    <button class="main-tab-btn" onclick="switchMainView('afg-map')">
+      <span class="tab-flag">🇦🇫</span> Afghanistan: Map
+    </button>
+    <button class="main-tab-btn" onclick="switchMainView('afg-dash')">
+      <span class="tab-flag">🇦🇫</span> Afghanistan: Visualizations
+    </button>
+  </div>
+
+  <!-- ===== IRAQ MAP VIEW ===== -->
+  <div id="iraq-map-view" class="view-container active">
+    <div id="control-panel">
+      <h2>Iraq Significant Acts (Dec 2007 – Feb 2009)</h2>
+      <div class="control-group">
+        <label for="date-slider">Date: <span id="current-date">Loading...</span></label>
+        <input type="range" id="date-slider" min="0" max="430" value="0" disabled>
+        <div class="date-nav">
+          <button id="prev-date" disabled>← Previous Day</button>
+          <button id="next-date" disabled>Next Day →</button>
+        </div>
+      </div>
+      <div class="control-group">
+        <label for="type-filter">Incident Type:</label>
+        <select id="type-filter"><option value="all">All Types</option></select>
+      </div>
+      <div class="control-group">
+        <label for="category-filter">Category:</label>
+        <select id="category-filter"><option value="all">All Categories</option></select>
+      </div>
+      <div class="control-group">
+        <label for="region-filter">Province:</label>
+        <select id="region-filter"><option value="all">All Provinces</option></select>
+      </div>
+      <div class="control-group">
+        <label>Visualization Mode:</label>
+        <div class="view-toggle">
+          <button id="toggle-markers" class="toggle-btn active">Clustered Markers</button>
+          <button id="toggle-heatmap" class="toggle-btn">Heatmap</button>
+        </div>
+      </div>
+      <div id="stats">
+        <div class="stat-item">
+          <span class="stat-label">Incidents Today:</span>
+          <span class="stat-value" id="incident-count">0</span>
+        </div>
+      </div>
+    </div>
+    <div id="map"></div>
+    <div id="legend">
+      <h3>Incident Types</h3>
+      <div class="legend-item"><span class="legend-color" style="background: #e74c3c;"></span><span>Enemy Action</span></div>
+      <div class="legend-item"><span class="legend-color" style="background: #f39c12;"></span><span>Explosive Hazard</span></div>
+      <div class="legend-item"><span class="legend-color" style="background: #3498db;"></span><span>Friendly Fire</span></div>
+    </div>
+  </div>
+
+  <!-- ===== IRAQ DASHBOARD VIEW ===== -->
+  <div id="iraq-dash-view" class="view-container">
+    <div id="dashboard-container">
+      <div class="dashboard-header">
+        <h1>Iraq SIGACT Analysis Dashboard</h1>
+        <p>Significant Activities Data Visualization (2003–2011 Detailed Analysis)</p>
+      </div>
+      <div class="tab-navigation">
+        <button class="tab-button active" id="treemap-tab-btn" onclick="switchDashTab('iraq', 'treemap')">Incident Types</button>
+        <button class="tab-button" id="radar-tab-btn" onclick="switchDashTab('iraq', 'radar')">Time Patterns</button>
+        <button class="tab-button" id="heatmap-tab-btn" onclick="switchDashTab('iraq', 'heatmap')">Daily Intensity</button>
+      </div>
+      <div class="tab-content">
+        <div class="tab-pane active" id="treemap-pane">
+          <div class="chart-title">Incident Type Distribution</div>
+          <div id="treemap-chart" class="chart-wrapper"></div>
+        </div>
+        <div class="tab-pane" id="radar-pane">
+          <div class="chart-title">Temporal Activity Patterns by Incident Type</div>
+          <div class="radar-container">
+            <div id="radar-chart-enemy" class="radar-chart-half"></div>
+            <div id="radar-chart-explosive" class="radar-chart-half"></div>
+          </div>
+        </div>
+        <div class="tab-pane" id="heatmap-pane">
+          <div class="chart-title">Daily Incident Intensity by Year (2003–2011)</div>
+          <div id="bar-chart" class="chart-wrapper"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== AFGHANISTAN MAP VIEW ===== -->
+  <div id="afg-map-view" class="view-container">
+    <div id="afg-control-panel" class="control-panel">
+      <h2>Afghanistan Significant Acts (2008–2014)</h2>
+      <div class="control-group">
+        <label for="afg-date-slider">Date: <span id="afg-current-date">Loading...</span></label>
+        <input type="range" id="afg-date-slider" min="0" max="430" value="0" disabled>
+        <div class="date-nav">
+          <button id="afg-prev-date" disabled>← Previous Day</button>
+          <button id="afg-next-date" disabled>Next Day →</button>
+        </div>
+      </div>
+      <div class="control-group">
+        <label for="afg-type-filter">Incident Type:</label>
+        <select id="afg-type-filter"><option value="all">All Types</option></select>
+      </div>
+      <div class="control-group">
+        <label for="afg-category-filter">Category:</label>
+        <select id="afg-category-filter"><option value="all">All Categories</option></select>
+      </div>
+      <div class="control-group">
+        <label>Visualization Mode:</label>
+        <div class="view-toggle">
+          <button id="afg-toggle-markers" class="toggle-btn active">Clustered Markers</button>
+          <button id="afg-toggle-heatmap" class="toggle-btn">Heatmap</button>
+        </div>
+      </div>
+      <div id="afg-stats">
+        <div class="stat-item">
+          <span class="stat-label">Incidents Today:</span>
+          <span class="stat-value" id="afg-incident-count">0</span>
+        </div>
+      </div>
+    </div>
+    <div id="afg-map"></div>
+    <div id="afg-legend" class="legend">
+      <h3>Incident Types</h3>
+      <div class="legend-item"><span class="legend-color" style="background: #e74c3c;"></span><span>Enemy Action</span></div>
+      <div class="legend-item"><span class="legend-color" style="background: #f39c12;"></span><span>Explosive Hazard</span></div>
+      <div class="legend-item"><span class="legend-color" style="background: #3498db;"></span><span>Friendly Fire</span></div>
+    </div>
+  </div>
+
+  <!-- ===== AFGHANISTAN DASHBOARD VIEW ===== -->
+  <div id="afg-dash-view" class="view-container">
+    <div id="afg-dashboard-container" class="dashboard-container">
+      <div class="dashboard-header">
+        <h1>Afghanistan SIGACT Analysis Dashboard</h1>
+        <p>Significant Activities Data Visualization (2008–2014)</p>
+      </div>
+      <div class="tab-navigation">
+        <button class="tab-button active" id="afg-treemap-tab-btn" onclick="switchDashTab('afg', 'treemap')">Incident Types</button>
+        <button class="tab-button" id="afg-radar-tab-btn" onclick="switchDashTab('afg', 'radar')">Time Patterns</button>
+        <button class="tab-button" id="afg-heatmap-tab-btn" onclick="switchDashTab('afg', 'heatmap')">Daily Intensity</button>
+      </div>
+      <div class="tab-content">
+        <div class="tab-pane active" id="afg-treemap-pane">
+          <div class="chart-title">Incident Type Distribution</div>
+          <div id="afg-treemap-chart" class="chart-wrapper"></div>
+        </div>
+        <div class="tab-pane" id="afg-radar-pane">
+          <div class="chart-title">Temporal Activity Patterns by Incident Type</div>
+          <div class="radar-container">
+            <div id="afg-radar-chart-enemy" class="radar-chart-half"></div>
+            <div id="afg-radar-chart-explosive" class="radar-chart-half"></div>
+          </div>
+        </div>
+        <div class="tab-pane" id="afg-heatmap-pane">
+          <div class="chart-title">Daily Incident Intensity by Year (2008–2014)</div>
+          <div id="afg-bar-chart" class="chart-wrapper"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
