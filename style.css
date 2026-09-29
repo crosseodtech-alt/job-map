@@ -55,3 +55,21 @@ body {
 #search-button:hover{
   background-color: green;
 }
+
+/* Link back to the portfolio site */
+.home-link {
+  position: absolute;
+  left: 12px;
+  bottom: 24px;
+  z-index: 1000;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: #2d5a27;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.home-link:hover { background: #4a7c42; }
