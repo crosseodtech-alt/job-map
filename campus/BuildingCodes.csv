@@ -1,0 +1,101 @@
+ORDER,Building Name,Gray Value,Closest Coffee Shop,Building Code,CoffeeX,CoffeeY
+1,Adams Humanities,0,Big City Bagels - Music,AH,626,523
+2,Administration,214,Big City Bagels - University Library,ADM,782,440
+3,Alumni Center,212,Big City Bagels - Peterson Gym,ALUM,245,560
+4,ARC,209,Big City Bagels - Peterson Gym,ARC,245,560
+5,Arena Meeting Center,3,Big City Bagels - Peterson Gym,AMC,245,560
+6,Art North,207,Starbucks - Aztec Shop Terrace,ARTN,487,202
+7,Art South,204,Starbucks - Aztec Shop Terrace,ARTS,487,202
+8,Arts and Letters,5,Starbucks - Aztec Shop Terrace,AL,487,202
+9,Astromony and Physics,201,Big City Bagels - Engineering & Interdisciplinary Sciences,,794,227
+10,Atkins Hall,199,Big City Bagels - Education,ATH,929,423
+11,Aztec Aquaplex,196,Big City Bagels - Peterson Gym,POOL,245,560
+12,Aztec Mesa,7,,,,
+13,Aztec Softball Field,194,Big City Bagels - Huaxyacac,,52,382
+14,Aztecs Shop Terrace,191,Starbucks - Aztec Shop Terrace,,487,202
+15,Bioscience Center,9,Big City Bagels - Engineering & Interdisciplinary Sciences,BSCI,794,227
+16,Logistical Services,189,Starbucks - Aztec Shop Terrace,,487,202
+17,Calpulli Center,186,Big City Bagels - Extended Studies Center,CLP,515,715
+18,Chapultepec Hall,11,Big City Bagels - Huaxyacac,,52,382
+19,Charles Hostler Hall,184,Starbucks - Aztec Shop Terrace,,487,202
+20,Chemical Sciences Labratory,181,Big City Bagels - Engineering & Interdisciplinary Sciences,CSL,794,227
+21,Children's Center,13,Big City Bagels - Education,UCC,929,423
+22,Chill Plant,179,Big City Bagels - Music,,626,523
+23,Cholula Community Center,176,Big City Bagels - Huaxyacac,,52,382
+24,College Square,15,Starbucks - Aztec Student Union,COSQ,803,540
+25,Communication,173,Starbucks - Aztec Shop Terrace,COM,487,202
+26,Conrad Prebsy Aztec Student Union,171,Starbucks - Aztec Student Union,ASU,803,540
+27,Cuicacalli Hall,17,Starbucks - Aztec Student Union,,803,540
+28,Dramatic Arts,168,Big City Bagels - Music,DA,626,523
+29,East Commons,166,Big City Bagels - University Library,EC,782,440
+30,Education,19,Big City Bagels - Education,ED,929,423
+31,Lamden Hall,163,Big City Bagels - Education,,929,423
+32,Engineering,161,Big City Bagels - Engineering & Interdisciplinary Sciences,E,794,227
+33,Engineering & Interdisciplinary Sciences,21,Big City Bagels - Engineering & Interdisciplinary Sciences,,794,227
+34,ENS,158,Big City Bagels - Music,ENS,626,523
+35,ENS Annex,23,Big City Bagels - Music,ENSA,626,523
+36,Extended Studies Center,156,Big City Bagels - Extended Studies Center,,515,715
+37,Facilities Services,153,Big City Bagels - Engineering & Interdisciplinary Sciences,PHPL,794,227
+38,Faculty Staff Club,25,Big City Bagels - Engineering & Interdisciplinary Sciences,,794,227
+39,Fowler Athletics,150,Big City Bagels - Peterson Gym,FAC,245,560
+40,Fraternity Row,148,Big City Bagels - Extended Studies Center,,515,715
+41,Gateway Center,27,Big City Bagels - Extended Studies Center,GC,515,715
+42,Geology Mathmatics and Computer Science,145,Big City Bagels - Engineering & Interdisciplinary Sciences,GMCS,794,227
+43,HA,29,,,,
+44,Hardy Tower,143,Starbucks - Aztec Shop Terrace,HT,487,202
+45,Hepner Hall,140,Big City Bagels - Engineering & Interdisciplinary Sciences,HH,794,227
+46,International Student Center,31,Big City Bagels - Huaxyacac,ISC,52,382
+47,Inustrial Technology,138,Big City Bagels - Engineering & Interdisciplinary Sciences,,794,227
+48,KPBS,135,Big City Bagels - Extended Studies Center,KPBS,515,715
+49,Library Information & Access Dome,33,Big City Bagels - University Library,LIB,782,440
+50,Life Sciences North,133,Big City Bagels - Engineering & Interdisciplinary Sciences,LSN,794,227
+51,Life Sciences South,35,Big City Bagels - Engineering & Interdisciplinary Sciences,LSS,794,227
+52,Bernstein Theatre,130,Starbucks - Aztec Shop Terrace,,487,202
+53,Malcom A. Love Library,37,Big City Bagels - University Library,LL,782,440
+54,Manchester Hall,128,Big City Bagels - University Library,MH,782,440
+55,Maya Hall,125,Starbucks - Aztec Student Union,,803,540
+56,Music,39,Big City Bagels - Music,M,626,523
+57,Nasatir Hall,122,Starbucks - Aztec Shop Terrace,NH,487,202
+58,NE 60,41,Big City Bagels - Education,,929,423
+59,Non SDSU Structure,219,,,,
+60,North Education,120,Big City Bagels - Education,NE,929,423
+61,Olmeca Hall,117,Starbucks - Aztec Student Union,,803,540
+62,Cal Coast Credit Union Open Air Theatre,43,Big City Bagels - Music,,626,523
+63,Peterson Gym,115,Big City Bagels - Peterson Gym,PG,245,560
+64,Physical Plant Boiler Shop,45,Big City Bagels - Engineering & Interdisciplinary Sciences,,794,227
+65,Physical Sciences,112,Big City Bagels - Engineering & Interdisciplinary Sciences,PS,794,227
+66,Physics,47,Big City Bagels - Engineering & Interdisciplinary Sciences,,794,227
+67,Piedra Del Sol Apartments,110,Big City Bagels - Extended Studies Center,,515,715
+68,Professional Studies and Fine Arts,49,Starbucks - Aztec Shop Terrace,PSFA,487,202
+69,PS 1,107,Big City Bagels - Education,PS 1,929,423
+70,PS 12,105,Big City Bagels - Music,PS 12,626,523
+71,PS 3,51,Starbucks - Aztec Student Union,PS 3,803,540
+72,PS 4,102,Starbucks - Aztec Student Union,PS 4,803,540
+73,PS 6,53,Big City Bagels - Extended Studies Center,PS 6,515,715
+74,PS 7,99,Big City Bagels - Peterson Gym,PS 7,245,560
+75,PS 14,55,Starbucks - Aztec Shop Terrace,PS 14,487,202
+76,Scripps Cottage,97,Big City Bagels - Music,,626,523
+77,SDSU Bookstore,57,Big City Bagels - University Library,BOOK,782,440
+78,SDSU Garage,94,Big City Bagels - Engineering & Interdisciplinary Sciences,,794,227
+79,SDSU Transit Center,59,Starbucks - Aztec Student Union,,803,540
+80,Speach Langage and Hearing Sciences,92,Big City Bagels - Extended Studies Center,SLHS,515,715
+81,Storm Hall,61,Starbucks - Aztec Shop Terrace,SH,487,202
+82,Storm Hall West,89,Starbucks - Aztec Shop Terrace,SHW,487,202
+83,Student Services East,63,Big City Bagels - Education,SSE,929,423
+84,Student Services West,87,Big City Bagels - Education,SSW,929,423
+85,Tacuba Hall,65,Starbucks - Aztec Student Union,,803,540
+86,Tarastec,84,Big City Bagels - Huaxyacac,,52,382
+87,Tenocha Hall,67,Starbucks - Aztec Student Union,,803,540
+88,Tepeyac Hall,82,Starbucks - Aztec Student Union,,803,540
+89,The Granada,221,Big City Bagels - Extended Studies Center,,515,715
+90,The Pride Center,79,Big City Bagels - Extended Studies Center,CD02,515,715
+91,Toltec,223,Big City Bagels - Huaxyacac,,52,382
+92,Tony Gwynn Stadium,77,Big City Bagels - Huaxyacac,TGS,52,382
+93,Tula Community Center,225,Starbucks - Aztec Student Union,,803,540
+94,University Police,74,Big City Bagels - Peterson Gym,,245,560
+95,Unlabeled SDSU Structure,217,,,,
+96,Viejas Arena,227,Big City Bagels - Peterson Gym,,245,560
+97,West Commons,71,Starbucks - Aztec Shop Terrace,WC,487,202
+98,Women's Resource Center,229,Big City Bagels - Extended Studies Center,CD02,515,715
+99,Zapotec,69,Big City Bagels - Huaxyacac,,52,382
+100,Zura Hall,231,Starbucks - Aztec Student Union,,803,540
