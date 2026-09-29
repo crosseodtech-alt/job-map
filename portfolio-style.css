@@ -508,6 +508,15 @@ footer.site-footer {
 .credly-badge { display: inline-block; margin-top: 1rem; }
 @media (max-width: 768px) { .competency-grid { grid-template-columns: 1fr; } }
 
+/* Instructor credit line on project cards */
+.project-body p.project-credit {
+  font-size: 0.9rem;
+  color: var(--medium-gray);
+  border-top: 1px solid var(--border);
+  padding-top: 0.75rem;
+}
+.project-credit a { color: var(--accent-brown); }
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .nav-container {
