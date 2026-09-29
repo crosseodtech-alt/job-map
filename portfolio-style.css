@@ -383,12 +383,45 @@ h3 {
 }
 
 /* Footer */
-footer {
+footer.site-footer {
   background-color: var(--dark-gray);
-  color: var(--white);
-  text-align: center;
-  padding: 2rem;
+  color: rgba(255,255,255,0.85);
+  padding: 2.25rem 2rem 1.5rem;
   margin-top: 4rem;
+  border-top: 3px solid var(--accent-tan);
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.footer-id strong { display: block; color: var(--white); font-size: 1.1rem; }
+.footer-id span { font-size: 0.9rem; }
+.footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.footer-links a {
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+  transition: color 0.3s, border-color 0.3s;
+}
+.footer-links a:hover { color: var(--accent-tan); border-color: var(--accent-tan); }
+.footer-copy {
+  max-width: 1200px;
+  margin: 1.5rem auto 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+  text-align: center;
+}
+@media (max-width: 600px) {
+  .footer-inner { flex-direction: column; text-align: center; }
+  .footer-links { justify-content: center; }
 }
 
 /* ===== Home: numbers strip ===== */
