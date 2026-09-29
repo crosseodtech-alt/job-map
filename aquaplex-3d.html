@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aquaplex Canyon 3D Valley Model - Joshua Cross</title>
+  <link rel="stylesheet" href="portfolio-style.css">
+  <style>
+    .model-intro { max-width: 820px; margin: 0 auto 1.5rem; text-align: center; color: var(--medium-gray); font-size: 1.05rem; line-height: 1.7; }
+    .model-frame {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--primary-green);
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .model-frame iframe { display: block; width: 100%; height: 68vh; min-height: 420px; border: 0; }
+    .model-hint { text-align: center; color: var(--medium-gray); font-size: 0.9rem; margin-top: 0.75rem; }
+    .model-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 2rem; }
+    .model-meta div { background: var(--light-surface); border-left: 4px solid var(--primary-green); border-radius: 0 6px 6px 0; padding: 0.9rem 1.1rem; }
+    .model-meta .k { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--primary-green); }
+    .model-meta .v { color: var(--dark-gray); margin-top: 0.2rem; }
+    .model-links { text-align: center; margin-top: 2rem; display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+    @media (max-width: 768px) { .model-frame iframe { height: 60vh; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-container">
+      <h1>Joshua Cross</h1>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="resume.html">Resume</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <section>
+      <h2>Aquaplex Canyon: 3D Valley Model</h2>
+      <p class="model-intro">
+        An interactive wireframe of Aquaplex Canyon at San Diego State University, built in R from a
+        1-meter USGS LiDAR-derived DEM. The red surface is a custom east-west reference plane across the
+        canyon rim; the space between it and the terrain below is the eroded valley volume, estimated at
+        191,139 m&sup3;.
+      </p>
+
+      <div class="model-frame">
+        <iframe src="valley_volume_wireframe_view.html" title="Interactive 3D wireframe of Aquaplex Canyon valley volume" loading="lazy"></iframe>
+      </div>
+      <p class="model-hint">Click and drag to rotate. Scroll to zoom.</p>
+
+      <div class="model-meta">
+        <div><div class="k">Data</div><div class="v">USGS 1 m LiDAR DEM, UAV SfM photogrammetry</div></div>
+        <div><div class="k">Tools</div><div class="v">R (terra, sf, rgl), ArcGIS Pro</div></div>
+        <div><div class="k">Result</div><div class="v">191,139 m&sup3; valley volume</div></div>
+        <div><div class="k">Course</div><div class="v">GEOG 401: Geomorphology, SDSU</div></div>
+      </div>
+
+      <div class="model-links">
+        <a href="https://storymaps.arcgis.com/stories/194bd8a8081242cbbac8ca4844e58283" class="project-link" target="_blank">View StoryMap &rarr;</a>
+        <a href="aquaplex-poster.html" class="project-link">View Poster &rarr;</a>
+        <a href="projects.html" class="project-link">All Projects &rarr;</a>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Joshua Cross. All rights reserved.</p>
+  </footer>
+</body>
+</html>
