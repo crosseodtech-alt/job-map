@@ -18,7 +18,9 @@ function setup() {
 
   let osmMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {attribution: '© OpenStreetMap'});
   
-  let darkMap = L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png", {attribution: '© CartoDB'});
+  // CARTO basemaps require an API key (restrict it by domain in the CARTO dashboard)
+  const CARTO_KEY = "cb1_43j6_1_27d8bd352526f68ac0fb3fb4";
+  let darkMap = L.tileLayer("https://basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png?key=" + CARTO_KEY, {attribution: '© OpenStreetMap contributors © CARTO'});
   
   let satMap = L.tileLayer ("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}");
   
