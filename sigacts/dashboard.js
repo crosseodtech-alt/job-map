@@ -99,12 +99,56 @@ let types = [], categories = [], regions = [];
 let treemapChart, radarChartEnemy, radarChartExplosive, barChart;
 
 // Start once the page's HTML is ready (replaces the old p5.js setup())
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   initMap();
+  const serverReady = await waitForServer();
+  if (!serverReady) return;
   loadMetadata();
   loadDates();
   loadDashboardData();
 });
+
+// ===== SERVER WAKE-UP =====
+// The backend runs on Render's free tier, which sleeps when idle and can take
+// up to a minute to wake. This checks the server's status endpoint and only
+// shows a banner if the server hasn't answered within BANNER_DELAY_MS.
+const BANNER_DELAY_MS  = 2000;   // don't show the banner if the server is already awake
+const WAKE_TIMEOUT_MS  = 90000;  // give up and show an error after this long
+const RETRY_EVERY_MS   = 3000;   // how often to re-check while waiting
+
+async function waitForServer() {
+  const banner = document.getElementById('server-status');
+  const text   = document.getElementById('server-status-text');
+  const start  = Date.now();
+  const showTimer = setTimeout(() => banner.classList.add('visible'), BANNER_DELAY_MS);
+
+  while (Date.now() - start < WAKE_TIMEOUT_MS) {
+    try {
+      const controller = new AbortController();
+      const abortTimer = setTimeout(() => controller.abort(), 30000);
+      const response = await fetch(`${API_URL}/`, { signal: controller.signal });
+      clearTimeout(abortTimer);
+      if (response.ok) {
+        const status = await response.json();
+        if (status.status && status.status.iraq === 'ready') {
+          clearTimeout(showTimer);
+          banner.classList.remove('visible');
+          return true;
+        }
+        text.textContent = 'Server is awake, loading incident data…';
+      }
+    } catch (error) {
+      // Server still asleep or starting; keep waiting
+    }
+    await new Promise(resolve => setTimeout(resolve, RETRY_EVERY_MS));
+  }
+
+  clearTimeout(showTimer);
+  banner.classList.add('visible', 'error');
+  text.innerHTML = 'The data server is not responding right now. ' +
+    '<button type="button" onclick="location.reload()">Try again</button>';
+  return false;
+}
 
 async function loadMetadata() {
   try {

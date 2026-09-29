@@ -110,3 +110,12 @@ select:focus { outline: none; border-color: #3498db; }
   #control-panel, #afg-control-panel { top: 185px; max-height: calc(100vh - 205px); }
   #dashboard-container, #afg-dashboard-container { padding-top: 185px; }
 }
+
+/* Server wake-up banner: hidden unless the backend is slow to respond */
+#server-status { display: none; position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 3000; align-items: center; gap: 12px; max-width: calc(100% - 32px); padding: 14px 20px; background: rgba(10,14,39,0.92); color: #fff; border: 1px solid rgba(79,195,247,0.5); border-radius: 10px; box-shadow: 0 4px 18px rgba(0,0,0,0.45); font-size: 15px; line-height: 1.4; }
+#server-status.visible { display: flex; }
+#server-status .spinner { flex-shrink: 0; width: 18px; height: 18px; border: 3px solid rgba(79,195,247,0.25); border-top-color: #4fc3f7; border-radius: 50%; animation: server-spin 0.9s linear infinite; }
+#server-status.error { border-color: rgba(231,76,60,0.7); }
+#server-status.error .spinner { display: none; }
+#server-status button { margin-left: 8px; background: #4fc3f7; color: #0a0e27; border: none; border-radius: 6px; padding: 6px 12px; font-weight: 600; cursor: pointer; }
+@keyframes server-spin { to { transform: rotate(360deg); } }
